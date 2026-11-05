@@ -1,0 +1,22 @@
+
+---
+title: "IEAP Series 04 – RStudio Assignment"
+author: "Werner BINCHE, Elouan DEFFIN, Vidusha THEBUWANA"
+format: html
+---
+
+# Introduction
+
+{{< include sections/01_introduction.qmd >}}
+
+# Part 2 – Linear regression and random noise
+
+{{< include sections/02_noise_regression.qmd >}}
+
+# Part 3 – Heart rate recovery
+
+{{< include sections/03_heart_rate_recovery.qmd >}}
+
+# Git workflow
+
+{{< include sections/04_git_workflow.qmd >}}
