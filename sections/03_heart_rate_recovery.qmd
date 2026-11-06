@@ -15,3 +15,14 @@ Bartels et al. (2018) also described two distinct phases of recovery: a fast pha
 
 These findings suggest that non-linear models may be more appropriate than a simple linear regression. A bi-exponential model could also be investigated to represent two recovery components, although its superiority must be demonstrated using the data.
 
+## - Physiological mechanisms
+
+The decrease in heart rate after exercise is mainly explained by changes in the activity of the autonomic nervous system [@bartels2018].
+
+Two mechanisms contribute to this recovery:
+
+Parasympathetic reactivation: responsible for much of the rapid decrease in heart rate immediately after exercise.
+
+Sympathetic withdrawal: contributes to the slower decrease during the later recovery period, together with parasympathetic activity.
+
+These mechanisms do not act at exactly the same speed, which helps explain why heart rate recovery is not constant over time.
