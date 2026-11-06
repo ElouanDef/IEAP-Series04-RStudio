@@ -606,3 +606,20 @@ model_metrics(
 )
 ```
 
+# - Draw a conclusion 
+
+Our results generally support our initial hypotheses.
+
+H1 and H2 were supported: the mono-exponential model performed better than the linear model for both recordings. For the short recording, R² increased from 0.580 to 0.797, while RMSE decreased from 4.697 to 3.266 bpm. Similar results were observed for the selected period of the long recording, where R² increased from 0.485 to 0.819. The graphs and residuals also showed that the exponential model better represented the shape of the heart rate decrease.
+
+H3 was partially supported: the bi-exponential model slightly improved the statistical results for the short recording (R² = 0.816 and AIC = 476.96). However, some estimated parameters were not physiologically realistic. Therefore, the additional complexity was not justified for physiological interpretation.
+
+H4 was not clearly supported: although the two recordings showed different heart rate patterns and recovery speeds, the mono-exponential model performed well in both selected periods. We therefore did not find evidence that different mathematical models were necessary.
+
+The graphs suggest a rapid initial decrease in heart rate followed by a slower phase. This is consistent with the recovery patterns discussed by Bartels et al. (2018) [@bartels2018]. However, our analysis does not allow us to confirm two distinct physiological recovery mechanisms.
+
+Our results are also consistent with Bartels-Ferreira et al. (2015) [@bartelsferreira2015], who investigated mono-exponential modeling of heart rate recovery.
+
+There are several limitations. First, the exact end of exercise was unknown, especially for the long recording. We selected the 28–35 minute period using heart rate and acceleration data, but we cannot confirm that it represents the complete recovery. Second, the exercise conditions were not standardized between recordings. Finally, some fluctuations remained unexplained by our models.
+
+Overall, we would choose the mono-exponential model to describe heart rate recovery after exercise. It provided a good statistical fit for both analyzed periods, with more interpretable parameters than the bi-exponential model. This choice is supported by our experimental results and the scientific literature. However, further recordings with clearly identified exercise and recovery periods would be necessary to confirm our conclusions.
