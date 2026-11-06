@@ -3,6 +3,8 @@
 title: "IEAP Series 04 – RStudio Assignment"
 author: "Werner BINCHE, Elouan DEFFIN, Vidusha THEBUWANA"
 format: html
+bibliography: references.bib
+csl: https://www.zotero.org/styles/apa
 ---
 
 # Introduction
