@@ -26,3 +26,29 @@ Parasympathetic reactivation: responsible for much of the rapid decrease in hear
 Sympathetic withdrawal: contributes to the slower decrease during the later recovery period, together with parasympathetic activity.
 
 These mechanisms do not act at exactly the same speed, which helps explain why heart rate recovery is not constant over time.
+
+## - Expected characteristics of the recovery curve 
+
+Based on the literature, we expect the recovery curve to show:
+
+A rapid initial decrease in heart rate immediately after exercise.
+
+A slower decrease during the following minutes.
+
+A progressive flattening of the curve as heart rate approaches a lower value.
+
+Differences depending on exercise intensity, since Bartels et al. (2018) observed that the transition between recovery phases occurred later after high-intensity exercise.
+
+Therefore, we expect the recovery curve to be non-linear rather than a straight line.
+
+## - Is one model sufficient for the whole recovery? 
+
+The literature suggests that a single model may not always describe every characteristic of heart rate recovery.
+
+Bartels-Ferreira et al. (2015) showed that a mono-exponential model can adequately represent recovery after resistance exercise. However, the estimated time constant and the quality of the model depend on the duration of the recording.
+
+Furthermore, Bartels et al. (2018) identified two recovery phases with different physiological mechanisms.
+
+These findings suggest that a mono-exponential model may be sufficient for some recovery periods, while a more complex model could be useful in other situations.
+
+However, the presence of two physiological phases does not necessarily mean that a bi-exponential model will provide a better fit.
