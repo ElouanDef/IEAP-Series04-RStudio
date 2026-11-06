@@ -2,3 +2,140 @@
 title: "noise"
 format: html
 ---
+### 1. Formulate your expectations
+
+Before running the simulations, we expect that increasing the level of random noise will make the observed data more dispersed around the underlying linear relationship.
+
+- **Estimated slope and intercept:** The estimated coefficients may differ from their theoretical values because random noise affects the position of the observations. With higher noise, these estimates are expected to become less reliable.
+- **Prediction quality:** Predictions are expected to become less accurate as the noise increases, because the observations will be further away from the fitted regression line.
+- **Explained variance (R²):** We expect the coefficient of determination to decrease as the noise level increases, since the linear model will explain a smaller proportion of the total variability in the data.
+
+The three estimated linear relationships are therefore not expected to be exactly identical, even though they share the same underlying theoretical relationship. Random variations in the generated data will lead to differences between the fitted regression models.
+
+
+### 2. Implement and investigate
+
+```{r}
+
+# Generate the x values
+set.seed(123)
+
+n <- 100
+x <- seq(0, 10, length.out = n)
+
+# Define the theoretical linear relationship
+y_theoretical <- 2 * x + 5
+
+# Generate three datasets with different noise levels
+data_low <- data.frame(
+  x = x,
+  y = y_theoretical + rnorm(n, mean = 0, sd = 2),
+  Noise = "Low noise"
+)
+
+data_medium <- data.frame(
+  x = x,
+  y = y_theoretical + rnorm(n, mean = 0, sd = 5),
+  Noise = "Medium noise"
+)
+
+data_high <- data.frame(
+  x = x,
+  y = y_theoretical + rnorm(n, mean = 0, sd = 10),
+  Noise = "High noise"
+)
+
+# Combine the three datasets
+data_all <- rbind(data_low, data_medium, data_high)
+
+# Display the first observations
+head(data_all)
+
+```
+```{r}
+
+# Fit a linear regression model for each dataset
+
+model_low <- lm(y ~ x, data = data_low)
+model_medium <- lm(y ~ x, data = data_medium)
+model_high <- lm(y ~ x, data = data_high)
+
+# Display the results of each model
+
+summary(model_low)
+summary(model_medium)
+summary(model_high)
+
+```
+```{r}
+# Compare the three regression models
+
+results <- data.frame(
+  Noise = c("Low", "Medium", "High"),
+  Intercept = c(
+    coef(model_low)[1],
+    coef(model_medium)[1],
+    coef(model_high)[1]
+  ),
+  Slope = c(
+    coef(model_low)[2],
+    coef(model_medium)[2],
+    coef(model_high)[2]
+  ),
+  R_squared = c(
+    summary(model_low)$r.squared,
+    summary(model_medium)$r.squared,
+    summary(model_high)$r.squared
+  ),
+  Residual_error = c(
+    sigma(model_low),
+    sigma(model_medium),
+    sigma(model_high)
+  )
+)
+
+results
+```
+
+```{r}
+# Plot the three datasets and their regression lines
+
+library(ggplot2)
+
+ggplot(data_all, aes(x = x, y = y, color = Noise)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_abline(
+    intercept = 5,
+    slope = 2,
+    color = "black",
+    linetype = "dashed"
+  ) +
+  labs(
+    title = "Effect of random noise on linear regression",
+    x = "X",
+    y = "Y",
+    color = "Noise level"
+  ) +
+  theme_minimal()
+```
+
+### 3. Draw conclusions
+
+The results are consistent with our initial expectations. Increasing the level of random noise leads to a greater dispersion of the data points around the regression line.
+
+The coefficient of determination (R²) decreases from 0.916 with low noise to 0.633 with medium noise and 0.354 with high noise. This shows that the linear model explains a smaller proportion of the variability in the data as noise increases.
+
+The residual standard error also increases from 1.829 to 9.481, indicating that the predictions become less accurate.
+
+The estimated slopes and intercepts are not exactly identical between the three models. However, they remain relatively close to the theoretical values of 2 for the slope and 5 for the intercept.
+
+Overall, random noise does not remove the underlying linear relationship, but it makes it more difficult to estimate accurately and reduces the predictive quality of the regression model.
+
+### 4. Propose a better numerical experiment
+
+To improve the numerical experiment, we could repeat the simulation 500 times for each noise level while keeping the same theoretical linear relationship and the same x values.
+
+For each simulation, we would calculate the estimated slope, intercept, R² and residual standard error. We could then calculate the average and standard deviation of these indicators for each noise level.
+
+This method would reduce the influence of random variations from a single simulation and provide a more reliable comparison. We would expect the average slope and intercept to remain close to their theoretical values, while the variability of the estimates and the prediction errors would increase with the noise level.
