@@ -188,3 +188,117 @@ legend("topright",
 summary(model_linear_short)
 ```
 
+```{r}
+
+# Fit a mono-exponential model
+model_exp_short <- nls(
+  value ~ HR_rest + A * exp(-k * time_min),
+  data = pulse_short,
+  start = list(HR_rest = 125, A = 30, k = 0.8),
+  algorithm = "port",
+  lower = c(HR_rest = 0, A = 0, k = 0)
+)
+
+# Display estimated parameters
+summary(model_exp_short)
+
+# Plot observed measurements
+plot(pulse_short$time_min, pulse_short$value,
+     pch = 16, cex = 0.6, col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Linear vs exponential - Short recording")
+
+# Add linear model
+abline(model_linear_short, col = "blue", lwd = 2)
+
+# Add exponential model
+lines(pulse_short$time_min,
+      predict(model_exp_short),
+      col = "darkgreen", lwd = 2)
+
+legend("topright",
+       legend = c("Observed data", "Linear", "Exponential"),
+       col = c("red", "blue", "darkgreen"),
+       pch = c(16, NA, NA),
+       lty = c(NA, 1, 1),
+       bty = "n")
+
+```
+
+```{r}
+
+# Predictions from both models
+pred_linear <- predict(model_linear_short)
+pred_exp <- predict(model_exp_short)
+
+# Observed heart rate
+observed <- pulse_short$value
+
+# Function to calculate model performance
+model_metrics <- function(observed, predicted) {
+  rmse <- sqrt(mean((observed - predicted)^2))
+  r2 <- 1 - sum((observed - predicted)^2) /
+    sum((observed - mean(observed))^2)
+
+  return(c(RMSE = rmse, R_squared = r2))
+}
+
+# Compare model performance
+comparison_short <- rbind(
+  Linear = model_metrics(observed, pred_linear),
+  Exponential = model_metrics(observed, pred_exp)
+)
+
+print(round(comparison_short, 3))
+
+```
+
+The mono-exponential model fits the short recording better than the linear model, with a higher R² (0.797 vs. 0.580) and a lower RMSE (3.266 vs. 4.697 bpm). This suggests that heart rate decreases rapidly at first before gradually stabilizing, rather than following a constant linear decrease.
+
+```{r}
+
+# Calculate residuals
+res_linear <- residuals(model_linear_short)
+res_exp <- residuals(model_exp_short)
+
+# Compare residual patterns
+par(mfrow = c(1, 2))
+
+plot(pulse_short$time_min, res_linear,
+     pch = 16, cex = 0.6, col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Residuals (bpm)",
+     main = "Linear model residuals")
+abline(h = 0, lty = 2)
+
+plot(pulse_short$time_min, res_exp,
+     pch = 16, cex = 0.6, col = "darkgreen",
+     xlab = "Time (minutes)",
+     ylab = "Residuals (bpm)",
+     main = "Exponential model residuals")
+abline(h = 0, lty = 2)
+
+par(mfrow = c(1, 1))
+
+```
+
+The linear model residuals show a clear systematic pattern, indicating that a straight line does not adequately describe heart rate recovery. The exponential model produces smaller and less systematically distributed residuals, although some fluctuations remain. This supports the use of a nonlinear model for the short recording.
+
+```{r}
+# Compare model complexity using AIC
+aic_comparison_short <- data.frame(
+  Model = c("Linear", "Mono-exponential"),
+  Parameters = c(2, 3),
+  AIC = c(
+    AIC(model_linear_short),
+    AIC(model_exp_short)
+  )
+)
+
+print(aic_comparison_short)
+summary(model_exp_short)
+```
+
+The mono-exponential model estimated an asymptotic heart rate of 130.21 bpm, an amplitude of 27.24 bpm, and a decay constant of 0.923 min⁻¹. The corresponding time constant was approximately 1.08 minutes, indicating a rapid initial decrease in heart rate followed by a slower stabilization phase. However, the estimated asymptote should not be interpreted as the participant's resting heart rate.
+
