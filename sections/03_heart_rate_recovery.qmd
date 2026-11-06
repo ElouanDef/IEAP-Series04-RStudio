@@ -64,3 +64,127 @@ H2: We expect the mono-exponential model to describe the general shape of heart 
 H3: We hypothesize that a bi-exponential model could better represent the fast and slow phases of recovery. However, this improvement may not be sufficient to justify the additional model complexity [@bartels2018].
 
 H4: We expect the best-fitting model to depend on the characteristics of each recording, particularly the duration of the actual recovery period and the shape of the heart rate curve. Therefore, the same model may not be optimal for both datasets.
+
+
+# 2 - Test your predictions using the datasets
+
+
+```{r}
+
+# Identify the two ZIP archives
+zip_files <- list.files(
+  "../data",
+  pattern = "\\.zip$",
+  full.names = TRUE
+)
+
+# Identify each recording
+zip_long <- zip_files[grepl("3h10m", zip_files)]
+zip_short <- zip_files[grepl("7m30s", zip_files)]
+
+# Import pulse data directly from the ZIP archives
+pulse_long <- read.csv(unz(zip_long, "pulse.csv"))
+pulse_short <- read.csv(unz(zip_short, "pulse.csv"))
+
+```
+
+
+```{r}
+
+# Convert timestamps into elapsed time (minutes)
+pulse_long$time_min <- (pulse_long$timestamp - min(pulse_long$timestamp)) / 60000
+pulse_short$time_min <- (pulse_short$timestamp - min(pulse_short$timestamp)) / 60000
+
+# Plot the long recording
+plot(pulse_long$time_min, pulse_long$value,
+     type = "l",
+     col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Heart rate - 3h10 recording")
+
+# Plot the short recording
+plot(pulse_short$time_min, pulse_short$value,
+     type = "l",
+     col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Heart rate - 7m30 recording")
+
+
+```
+
+```{r}
+
+# Summary of the two recordings
+summary(pulse_long[, c("time_min", "value")])
+summary(pulse_short[, c("time_min", "value")])
+
+# Check measurement intervals
+summary(diff(pulse_long$time_min) * 60)
+summary(diff(pulse_short$time_min) * 60)
+
+```
+
+```{r}
+
+# Select the first 10 minutes of the long recording
+recovery_long_10 <- subset(pulse_long, time_min <= 10)
+
+# Plot the first 10 minutes
+plot(recovery_long_10$time_min,
+     recovery_long_10$value,
+     type = "p",
+     pch = 16 ,
+     cex = 0.6 ,
+     col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "First 10 minutes - Long recording")
+
+# Plot the complete short recording
+plot(pulse_short$time_min,
+     pulse_short$value,
+     type = "p",
+     pch = 16 ,
+     cex = 0.6 ,
+     col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Complete short recording")
+
+```
+
+```{r}
+
+# Fit a linear regression to the short recording
+model_linear_short <- lm(value ~ time_min, data = pulse_short)
+
+# Display model coefficients and statistics
+summary(model_linear_short)
+
+# Plot the observed data
+plot(pulse_short$time_min, pulse_short$value,
+     type = "p",
+     pch = 16 ,
+     cex = 0.6,
+     col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Linear regression - Short recording")
+
+# Add the fitted regression line
+abline(model_linear_short, col = "blue", lwd = 2)
+
+legend("topright",
+       legend = c("Observed heart rate", "Linear model"),
+       col = c("red", "blue"),
+       lty = 1,
+       bty = "n")
+
+```
+
+```{r}
+summary(model_linear_short)
+```
+
