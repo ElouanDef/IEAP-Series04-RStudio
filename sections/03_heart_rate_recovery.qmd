@@ -1,4 +1,17 @@
 ---
-title: "heart"
+title: "heart rate recovery"
 format: html
 ---
+
+# 1 - Formulate predictions from scientific literature
+
+## - Mathematical models
+
+Heart rate recovery (HRR) after exercise has been described using mathematical models, particularly exponential decay models [@bartels2018; @bartelsferreira2015].
+
+A mono-exponential model describes a rapid initial decrease in heart rate followed by a progressively slower decrease. Bartels-Ferreira et al. (2015) demonstrated that this model can adequately describe heart rate recovery after resistance exercise, provided that the recording period is sufficiently long.
+
+Bartels et al. (2018) also described two distinct phases of recovery: a fast phase and a slow phase. Their study proposed a method to identify the transition between these phases.
+
+These findings suggest that non-linear models may be more appropriate than a simple linear regression. A bi-exponential model could also be investigated to represent two recovery components, although its superiority must be demonstrated using the data.
+
