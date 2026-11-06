@@ -52,3 +52,15 @@ Furthermore, Bartels et al. (2018) identified two recovery phases with different
 These findings suggest that a mono-exponential model may be sufficient for some recovery periods, while a more complex model could be useful in other situations.
 
 However, the presence of two physiological phases does not necessarily mean that a bi-exponential model will provide a better fit.
+
+Our hypotheses 
+
+## - Based on these two studies, we formulate the following hypotheses for the two recordings:
+
+H1: We expect heart rate to decrease rapidly immediately after exercise, followed by a slower decrease. Therefore, the linear model is expected to provide a poorer fit than the exponential models.
+
+H2: We expect the mono-exponential model to describe the general shape of heart rate recovery better than the linear model, particularly when a sufficiently long recovery period is available [@bartelsferreira2015].
+
+H3: We hypothesize that a bi-exponential model could better represent the fast and slow phases of recovery. However, this improvement may not be sufficient to justify the additional model complexity [@bartels2018].
+
+H4: We expect the best-fitting model to depend on the characteristics of each recording, particularly the duration of the actual recovery period and the shape of the heart rate curve. Therefore, the same model may not be optimal for both datasets.
