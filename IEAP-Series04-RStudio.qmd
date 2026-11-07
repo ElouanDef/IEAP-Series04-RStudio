@@ -2,10 +2,14 @@
 ---
 title: "IEAP Series 04 – RStudio Assignment"
 author: "Werner BINCHE, Elouan DEFFIN, Vidusha THEBUWANA"
+date: "2026-11-07"
+date-format: "YYYY-MM-DD"
 format: html
 bibliography: references.bib
 csl: https://www.zotero.org/styles/apa
 ---
+
+Github Link: https://github.com/ElouanDef/IEAP-Series04-RStudio
 
 # Introduction
 
