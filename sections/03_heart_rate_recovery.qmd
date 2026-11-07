@@ -68,7 +68,7 @@ H4: We expect the best-fitting model to depend on the characteristics of each re
 
 # Identify the two ZIP archives
 zip_files <- list.files(
-  "../data",
+  "data",
   pattern = "\\.zip$",
   full.names = TRUE
 )
