@@ -1,4 +1,625 @@
 ---
-title: "heart"
+title: "heart rate recovery"
 format: html
 ---
+
+# 1 - Formulate predictions from scientific literature
+
+## - Mathematical models
+
+Heart rate recovery (HRR) after exercise has been described using mathematical models, particularly exponential decay models [@bartels2018; @bartelsferreira2015].
+
+A mono-exponential model describes a rapid initial decrease in heart rate followed by a progressively slower decrease. Bartels-Ferreira et al. (2015) demonstrated that this model can adequately describe heart rate recovery after resistance exercise, provided that the recording period is sufficiently long.
+
+Bartels et al. (2018) also described two distinct phases of recovery: a fast phase and a slow phase. Their study proposed a method to identify the transition between these phases.
+
+These findings suggest that non-linear models may be more appropriate than a simple linear regression. A bi-exponential model could also be investigated to represent two recovery components, although its superiority must be demonstrated using the data.
+
+## - Physiological mechanisms
+
+The decrease in heart rate after exercise is mainly explained by changes in the activity of the autonomic nervous system [@bartels2018].
+
+Two mechanisms contribute to this recovery:
+
+Parasympathetic reactivation: responsible for much of the rapid decrease in heart rate immediately after exercise.
+
+Sympathetic withdrawal: contributes to the slower decrease during the later recovery period, together with parasympathetic activity.
+
+These mechanisms do not act at exactly the same speed, which helps explain why heart rate recovery is not constant over time.
+
+## - Expected characteristics of the recovery curve 
+
+Based on the literature, we expect the recovery curve to show:
+
+A rapid initial decrease in heart rate immediately after exercise.
+
+A slower decrease during the following minutes.
+
+A progressive flattening of the curve as heart rate approaches a lower value.
+
+Differences depending on exercise intensity, since Bartels et al. (2018) observed that the transition between recovery phases occurred later after high-intensity exercise.
+
+Therefore, we expect the recovery curve to be non-linear rather than a straight line.
+
+## - Is one model sufficient for the whole recovery? 
+
+The literature suggests that a single model may not always describe every characteristic of heart rate recovery.
+
+Bartels-Ferreira et al. (2015) showed that a mono-exponential model can adequately represent recovery after resistance exercise. However, the estimated time constant and the quality of the model depend on the duration of the recording.
+
+Furthermore, Bartels et al. (2018) identified two recovery phases with different physiological mechanisms.
+
+These findings suggest that a mono-exponential model may be sufficient for some recovery periods, while a more complex model could be useful in other situations.
+
+However, the presence of two physiological phases does not necessarily mean that a bi-exponential model will provide a better fit.
+
+Our hypotheses 
+
+## - Based on these two studies, we formulate the following hypotheses for the two recordings:
+
+H1: We expect heart rate to decrease rapidly immediately after exercise, followed by a slower decrease. Therefore, the linear model is expected to provide a poorer fit than the exponential models.
+
+H2: We expect the mono-exponential model to describe the general shape of heart rate recovery better than the linear model, particularly when a sufficiently long recovery period is available [@bartelsferreira2015].
+
+H3: We hypothesize that a bi-exponential model could better represent the fast and slow phases of recovery. However, this improvement may not be sufficient to justify the additional model complexity [@bartels2018].
+
+H4: We expect the best-fitting model to depend on the characteristics of each recording, particularly the duration of the actual recovery period and the shape of the heart rate curve. Therefore, the same model may not be optimal for both datasets.
+
+
+# 2 - Test your predictions using the datasets
+
+
+```{r}
+
+# Identify the two ZIP archives
+zip_files <- list.files(
+  "../data",
+  pattern = "\\.zip$",
+  full.names = TRUE
+)
+
+# Identify each recording
+zip_long <- zip_files[grepl("3h10m", zip_files)]
+zip_short <- zip_files[grepl("7m30s", zip_files)]
+
+# Import pulse data directly from the ZIP archives
+pulse_long <- read.csv(unz(zip_long, "pulse.csv"))
+pulse_short <- read.csv(unz(zip_short, "pulse.csv"))
+
+```
+
+
+```{r}
+
+# Convert timestamps into elapsed time (minutes)
+pulse_long$time_min <- (pulse_long$timestamp - min(pulse_long$timestamp)) / 60000
+pulse_short$time_min <- (pulse_short$timestamp - min(pulse_short$timestamp)) / 60000
+
+# Plot the long recording
+plot(pulse_long$time_min, pulse_long$value,
+     type = "l",
+     col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Heart rate - 3h10 recording")
+
+# Plot the short recording
+plot(pulse_short$time_min, pulse_short$value,
+     type = "l",
+     col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Heart rate - 7m30 recording")
+
+
+```
+
+```{r}
+
+# Summary of the two recordings
+summary(pulse_long[, c("time_min", "value")])
+summary(pulse_short[, c("time_min", "value")])
+
+# Check measurement intervals
+summary(diff(pulse_long$time_min) * 60)
+summary(diff(pulse_short$time_min) * 60)
+
+```
+
+```{r}
+
+# Select the first 10 minutes of the long recording
+recovery_long_10 <- subset(pulse_long, time_min <= 10)
+
+# Plot the first 10 minutes
+plot(recovery_long_10$time_min,
+     recovery_long_10$value,
+     type = "p",
+     pch = 16 ,
+     cex = 0.6 ,
+     col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "First 10 minutes - Long recording")
+
+# Plot the complete short recording
+plot(pulse_short$time_min,
+     pulse_short$value,
+     type = "p",
+     pch = 16 ,
+     cex = 0.6 ,
+     col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Complete short recording")
+
+```
+
+```{r}
+
+# Fit a linear regression to the short recording
+model_linear_short <- lm(value ~ time_min, data = pulse_short)
+
+# Display model coefficients and statistics
+summary(model_linear_short)
+
+# Plot the observed data
+plot(pulse_short$time_min, pulse_short$value,
+     type = "p",
+     pch = 16 ,
+     cex = 0.6,
+     col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Linear regression - Short recording")
+
+# Add the fitted regression line
+abline(model_linear_short, col = "blue", lwd = 2)
+
+legend("topright",
+       legend = c("Observed heart rate", "Linear model"),
+       col = c("red", "blue"),
+       lty = 1,
+       bty = "n")
+
+```
+
+```{r}
+summary(model_linear_short)
+```
+
+```{r}
+
+# Fit a mono-exponential model
+model_exp_short <- nls(
+  value ~ HR_rest + A * exp(-k * time_min),
+  data = pulse_short,
+  start = list(HR_rest = 125, A = 30, k = 0.8),
+  algorithm = "port",
+  lower = c(HR_rest = 0, A = 0, k = 0)
+)
+
+# Display estimated parameters
+summary(model_exp_short)
+
+# Plot observed measurements
+plot(pulse_short$time_min, pulse_short$value,
+     pch = 16, cex = 0.6, col = "red",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Linear vs exponential - Short recording")
+
+# Add linear model
+abline(model_linear_short, col = "blue", lwd = 2)
+
+# Add exponential model
+lines(pulse_short$time_min,
+      predict(model_exp_short),
+      col = "darkgreen", lwd = 2)
+
+legend("topright",
+       legend = c("Observed data", "Linear", "Exponential"),
+       col = c("red", "blue", "darkgreen"),
+       pch = c(16, NA, NA),
+       lty = c(NA, 1, 1),
+       bty = "n")
+
+```
+
+```{r}
+
+# Predictions from both models
+pred_linear <- predict(model_linear_short)
+pred_exp <- predict(model_exp_short)
+
+# Observed heart rate
+observed <- pulse_short$value
+
+# Function to calculate model performance
+model_metrics <- function(observed, predicted) {
+  rmse <- sqrt(mean((observed - predicted)^2))
+  r2 <- 1 - sum((observed - predicted)^2) /
+    sum((observed - mean(observed))^2)
+
+  return(c(RMSE = rmse, R_squared = r2))
+}
+
+# Compare model performance
+comparison_short <- rbind(
+  Linear = model_metrics(observed, pred_linear),
+  Exponential = model_metrics(observed, pred_exp)
+)
+
+print(round(comparison_short, 3))
+
+```
+
+The mono-exponential model fits the short recording better than the linear model, with a higher R² (0.797 vs. 0.580) and a lower RMSE (3.266 vs. 4.697 bpm). This suggests that heart rate decreases rapidly at first before gradually stabilizing, rather than following a constant linear decrease.
+
+```{r}
+
+# Calculate residuals
+res_linear <- residuals(model_linear_short)
+res_exp <- residuals(model_exp_short)
+
+# Compare residual patterns
+par(mfrow = c(1, 2))
+
+plot(pulse_short$time_min, res_linear,
+     pch = 16, cex = 0.6, col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Residuals (bpm)",
+     main = "Linear model residuals")
+abline(h = 0, lty = 2)
+
+plot(pulse_short$time_min, res_exp,
+     pch = 16, cex = 0.6, col = "darkgreen",
+     xlab = "Time (minutes)",
+     ylab = "Residuals (bpm)",
+     main = "Exponential model residuals")
+abline(h = 0, lty = 2)
+
+par(mfrow = c(1, 1))
+
+```
+
+The linear model residuals show a clear systematic pattern, indicating that a straight line does not adequately describe heart rate recovery. The exponential model produces smaller and less systematically distributed residuals, although some fluctuations remain. This supports the use of a nonlinear model for the short recording.
+
+```{r}
+# Compare model complexity using AIC
+aic_comparison_short <- data.frame(
+  Model = c("Linear", "Mono-exponential"),
+  Parameters = c(2, 3),
+  AIC = c(
+    AIC(model_linear_short),
+    AIC(model_exp_short)
+  )
+)
+
+print(aic_comparison_short)
+summary(model_exp_short)
+```
+
+The mono-exponential model estimated an asymptotic heart rate of 130.21 bpm, an amplitude of 27.24 bpm, and a decay constant of 0.923 min⁻¹. The corresponding time constant was approximately 1.08 minutes, indicating a rapid initial decrease in heart rate followed by a slower stabilization phase. However, the estimated asymptote should not be interpreted as the participant's resting heart rate.
+
+```{r}
+# Smooth the long recording using a 12-point moving average
+# Approximately 12 measurements x 5 seconds = 1 minute
+pulse_long$hr_smooth <- as.numeric(
+  stats::filter(pulse_long$value,
+                rep(1 / 12, 12),
+                sides = 2)
+)
+
+# Plot raw heart rate and smoothed trend
+plot(pulse_long$time_min, pulse_long$value,
+     type = "l", col = "lightgray",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Long recording - Heart rate trend")
+
+lines(pulse_long$time_min, pulse_long$hr_smooth,
+      col = "blue", lwd = 2)
+
+legend("topright",
+       legend = c("Raw heart rate", "1-minute moving average"),
+       col = c("lightgray", "blue"),
+       lty = 1, bty = "n")
+
+```
+
+```{r}
+
+# Explore three periods of the long recording
+windows <- list(
+  c(20, 40),
+  c(45, 65),
+  c(85, 105)
+)
+
+par(mfrow = c(1, 3))
+
+for (w in windows) {
+  selected <- subset(
+    pulse_long,
+    time_min >= w[1] & time_min <= w[2]
+  )
+
+  plot(selected$time_min, selected$value,
+       type = "p", pch = 16, cex = 0.4,
+       col = "gray50",
+       xlab = "Time (minutes)",
+       ylab = "Heart rate (bpm)",
+       main = paste(w[1], "-", w[2], "min"))
+
+  lines(selected$time_min, selected$hr_smooth,
+        col = "blue", lwd = 2)
+}
+
+par(mfrow = c(1, 1))
+
+```
+
+```{r}
+
+# Import acceleration data from the long recording
+acc_long <- read.csv(unz(zip_long, "acceleration.csv"))
+
+# Examine the structure
+str(acc_long)
+head(acc_long)
+
+```
+
+Ok so now, after import the data acceleration, we want to know if have any relationship between the acceleration and the heart rate. 
+
+```{r}
+
+# Convert timestamps to minutes
+acc_long$time_min <- (
+  acc_long$timestamp - min(pulse_long$timestamp)
+) / 60000
+
+# Calculate acceleration magnitude
+acc_long$magnitude <- sqrt(
+  acc_long$x^2 + acc_long$y^2 + acc_long$z^2
+)
+
+# Estimate movement intensity
+acc_long$movement <- c(
+  NA, abs(diff(acc_long$magnitude))
+)
+
+# Select the 20-40 minute period
+hr_selected <- subset(
+  pulse_long, time_min >= 20 & time_min <= 40
+)
+
+acc_selected <- subset(
+  acc_long, time_min >= 20 & time_min <= 40
+)
+
+# Plot heart rate as points
+plot(hr_selected$time_min, hr_selected$value,
+     pch = 16, cex = 0.5, col = "blue",
+     xlab = "Time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Heart rate - 20 to 40 min")
+
+# Plot movement separately
+plot(acc_selected$time_min, acc_selected$movement,
+     type = "l", col = "darkgreen",
+     xlab = "Time (minutes)",
+     ylab = "Change in acceleration magnitude",
+     main = "Movement - 20 to 40 min")
+
+
+```
+
+```{r}
+
+# Select a potential recovery period (28-35 min)
+recovery_long <- subset(
+  pulse_long,
+  time_min >= 28 & time_min <= 35
+)
+
+# Reset time to zero at the beginning of the selected period
+recovery_long$recovery_time <- (
+  recovery_long$time_min - min(recovery_long$time_min)
+)
+
+# Plot the selected recovery period
+plot(recovery_long$recovery_time,
+     recovery_long$value,
+     pch = 16, cex = 0.6, col = "blue",
+     xlab = "Recovery time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Potential recovery period - Long recording")
+
+```
+
+For the longer recording, we examined both heart rate and acceleration data to identify a potential recovery period. Increased movement activity was observed around 24–28 minutes, followed by lower movement levels and a progressive decrease in heart rate. Therefore, the 28–35 minute interval was selected for further regression analysis, although the exact end of exercise could not be confirmed.
+
+```{r}
+
+# Linear regression - Long recording
+model_linear_long <- lm(
+  value ~ recovery_time,
+  data = recovery_long
+)
+
+# Mono-exponential regression - Long recording
+model_exp_long <- nls(
+  value ~ HR_rest + A * exp(-k * recovery_time),
+  data = recovery_long,
+  start = list(HR_rest = 98, A = 35, k = 1),
+  algorithm = "port",
+  lower = c(HR_rest = 0, A = 0, k = 0)
+)
+
+# Display model summaries
+summary(model_linear_long)
+summary(model_exp_long)
+
+# Plot observed data
+plot(recovery_long$recovery_time,
+     recovery_long$value,
+     pch = 16, cex = 0.6, col = "blue",
+     xlab = "Recovery time (minutes)",
+     ylab = "Heart rate (bpm)",
+     main = "Linear vs exponential - Long recording")
+
+# Add linear regression
+abline(model_linear_long, col = "red", lwd = 2)
+
+# Add exponential regression
+lines(recovery_long$recovery_time,
+      predict(model_exp_long),
+      col = "darkgreen", lwd = 2)
+
+legend("topright",
+       legend = c("Observed data", "Linear", "Exponential"),
+       col = c("blue", "red", "darkgreen"),
+       pch = c(16, NA, NA),
+       lty = c(NA, 1, 1),
+       bty = "n")
+
+```
+
+For the selected 28–35 minute interval of the long recording, the mono-exponential model visually follows the initial rapid decrease in heart rate more closely than the linear model. It also captures the subsequent stabilization, although some fluctuations remain unexplained.
+
+```{r}
+
+# Predictions for the long recording
+pred_linear_long <- predict(model_linear_long)
+pred_exp_long <- predict(model_exp_long)
+
+# Compare RMSE and R-squared
+comparison_long <- rbind(
+  Linear = model_metrics(
+    recovery_long$value, pred_linear_long
+  ),
+  Exponential = model_metrics(
+    recovery_long$value, pred_exp_long
+  )
+)
+
+# Add AIC values
+comparison_long <- cbind(
+  comparison_long,
+  AIC = c(
+    AIC(model_linear_long),
+    AIC(model_exp_long)
+  )
+)
+
+print(round(comparison_long, 3))
+
+```
+
+For the selected recovery interval of the long recording, the mono-exponential model performed substantially better than the linear model. It achieved a higher R² (0.819 vs. 0.485), a lower RMSE (3.894 vs. 6.576 bpm), and a lower AIC (474.79 vs. 560.80). These results support the hypothesis that a nonlinear model better describes the observed decrease in heart rate.
+
+
+```{r}
+
+# Residuals for the long recording
+res_linear_long <- residuals(model_linear_long)
+res_exp_long <- residuals(model_exp_long)
+
+# Plot linear model residuals
+plot(recovery_long$recovery_time, res_linear_long,
+     pch = 16, cex = 0.6, col = "red",
+     xlab = "Recovery time (minutes)",
+     ylab = "Residuals (bpm)",
+     main = "Linear residuals - Long recording")
+abline(h = 0, lty = 2)
+
+# Plot exponential model residuals
+plot(recovery_long$recovery_time, res_exp_long,
+     pch = 16, cex = 0.6, col = "darkgreen",
+     xlab = "Recovery time (minutes)",
+     ylab = "Residuals (bpm)",
+     main = "Exponential residuals - Long recording")
+abline(h = 0, lty = 2)
+
+```
+
+The linear model residuals show a systematic curved pattern, indicating that the model does not adequately capture the shape of the heart rate decrease. In contrast, the mono-exponential model produces residuals that are more evenly distributed around zero, although some outliers and fluctuations remain. This supports the better fit of the mono-exponential model for the selected interval.
+
+```{r}
+summary(model_exp_long)
+```
+
+The mono-exponential model estimated an asymptotic heart rate of 99.82 bpm, an amplitude of 37.36 bpm, and a decay constant of 1.238 min⁻¹ for the selected interval of the long recording. The corresponding time constant was approximately 0.81 minutes, compared with 1.08 minutes for the short recording. This suggests a faster modeled decrease in heart rate during the selected long-recording interval, although differences in exercise conditions and recovery-period identification prevent direct conclusions about physiological recovery capacity.
+
+```{r}
+
+# Try several starting values for the bi-exponential model
+starts <- list(
+  c(128, 18, 2, 10, 0.3),
+  c(125, 20, 1.5, 10, 0.1),
+  c(130, 15, 3, 12, 0.5),
+  c(125, 25, 1, 5, 0.1)
+)
+
+model_biexp_short <- NULL
+
+for (s in starts) {
+  fit <- try(
+    nls(
+      value ~ HR_rest + A1 * exp(-k1 * time_min) +
+        A2 * exp(-k2 * time_min),
+      data = pulse_short,
+      start = as.list(setNames(
+        s, c("HR_rest", "A1", "k1", "A2", "k2")
+      )),
+      algorithm = "port",
+      lower = c(0, 0, 0, 0, 0),
+      control = nls.control(maxiter = 500, warnOnly = TRUE)
+    ),
+    silent = TRUE
+  )
+
+  if (!inherits(fit, "try-error") &&
+      isTRUE(fit$convInfo$isConv)) {
+    model_biexp_short <- fit
+    break
+  }
+}
+
+if (is.null(model_biexp_short)) {
+  cat("No bi-exponential fit converged.\n")
+} else {
+  print(summary(model_biexp_short))
+  print(AIC(model_biexp_short))
+}
+
+```
+
+The bi-exponential model achieved a slightly lower AIC than the mono-exponential model (476.96 vs. 481.68). However, its parameters were poorly identified, with an estimated asymptotic heart rate of 0 bpm and very large standard errors for several parameters. Therefore, despite the improved statistical fit, the mono-exponential model was considered more appropriate for physiological interpretation because of its greater simplicity and more plausible parameter estimates.
+
+```{r}
+model_metrics(
+  pulse_short$value,
+  predict(model_biexp_short)
+)
+```
+
+# - Draw a conclusion 
+
+Our results generally support our initial hypotheses.
+
+H1 and H2 were supported: the mono-exponential model performed better than the linear model for both recordings. For the short recording, R² increased from 0.580 to 0.797, while RMSE decreased from 4.697 to 3.266 bpm. Similar results were observed for the selected period of the long recording, where R² increased from 0.485 to 0.819. The graphs and residuals also showed that the exponential model better represented the shape of the heart rate decrease.
+
+H3 was partially supported: the bi-exponential model slightly improved the statistical results for the short recording (R² = 0.816 and AIC = 476.96). However, some estimated parameters were not physiologically realistic. Therefore, the additional complexity was not justified for physiological interpretation.
+
+H4 was not clearly supported: although the two recordings showed different heart rate patterns and recovery speeds, the mono-exponential model performed well in both selected periods. We therefore did not find evidence that different mathematical models were necessary.
+
+The graphs suggest a rapid initial decrease in heart rate followed by a slower phase. This is consistent with the recovery patterns discussed by Bartels et al. (2018) [@bartels2018]. However, our analysis does not allow us to confirm two distinct physiological recovery mechanisms.
+
+Our results are also consistent with Bartels-Ferreira et al. (2015) [@bartelsferreira2015], who investigated mono-exponential modeling of heart rate recovery.
+
+There are several limitations. First, the exact end of exercise was unknown, especially for the long recording. We selected the 28–35 minute period using heart rate and acceleration data, but we cannot confirm that it represents the complete recovery. Second, the exercise conditions were not standardized between recordings. Finally, some fluctuations remained unexplained by our models.
+
+Overall, we would choose the mono-exponential model to describe heart rate recovery after exercise. It provided a good statistical fit for both analyzed periods, with more interpretable parameters than the bi-exponential model. This choice is supported by our experimental results and the scientific literature. However, further recordings with clearly identified exercise and recovery periods would be necessary to confirm our conclusions.

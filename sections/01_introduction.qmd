@@ -7,4 +7,8 @@ format: html
 
 Linear regression is a statistical method used to describe and analyse the relationship between two variables. It allows us to estimate a linear trend and make predictions based on observed data. However, real-world measurements often contain random noise, which can influence the accuracy and reliability of regression models.
 
-The aim of this study is to investigate how different levels of random noise affect linear regression. Three synthetic datasets will be generated using the same underlying linear relationship but with different levels of random variability. The resulting regression models will then be compared using numerical indicators and graphical representations to evaluate the impact of noise on parameter estimation, explained variance and prediction accuracy.
+The first part of this study is to investigate how different levels of random noise affect linear regression. Three synthetic datasets will be generated using the same underlying linear relationship but with different levels of random variability. The resulting regression models will then be compared using numerical indicators and graphical representations to evaluate the impact of noise on parameter estimation, explained variance and prediction accuracy.
+
+The second part focuses on modelling heart rate recovery after exercise using real physiological data. Linear, mono-exponential, and, when justified, bi-exponential models are evaluated to determine which best describes the decrease in heart rate over time. Model performance is assessed through goodness-of-fit indicators, residual analysis, and physiological interpretation.
+
+Together, these two analyses aim to demonstrate how data variability and model selection influence the interpretation and reliability of regression results.
