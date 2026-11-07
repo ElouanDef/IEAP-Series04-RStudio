@@ -1,4 +1,4 @@
-### 1. Formulate your expectations
+## Formulate your expectations
 
 Before running the simulations, we expect that increasing the level of random noise will make the observed data more dispersed around the underlying linear relationship.
 
@@ -9,7 +9,7 @@ Before running the simulations, we expect that increasing the level of random no
 The three estimated linear relationships are therefore not expected to be exactly identical, even though they share the same underlying theoretical relationship. Random variations in the generated data will lead to differences between the fitted regression models.
 
 
-### 2. Implement and investigate
+## Implement and investigate
 
 ```{r}
 
@@ -116,7 +116,7 @@ ggplot(data_all, aes(x = x, y = y, color = Noise)) +
   theme_minimal()
 ```
 
-### 3. Draw conclusions
+## Draw conclusions
 
 The results are consistent with our initial expectations. Increasing the level of random noise leads to a greater dispersion of the data points around the regression line.
 
@@ -128,7 +128,7 @@ The estimated slopes and intercepts are not exactly identical between the three 
 
 Overall, random noise does not remove the underlying linear relationship, but it makes it more difficult to estimate accurately and reduces the predictive quality of the regression model.
 
-### 4. Propose a better numerical experiment
+## Propose a better numerical experiment
 
 To improve the numerical experiment, we could repeat the simulation 500 times for each noise level while keeping the same theoretical linear relationship and the same x values.
 

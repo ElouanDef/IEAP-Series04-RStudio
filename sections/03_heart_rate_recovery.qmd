@@ -1,6 +1,6 @@
-# 1 - Formulate predictions from scientific literature
+## Formulate predictions from scientific literature
 
-## - Mathematical models
+### Mathematical models
 
 Heart rate recovery (HRR) after exercise has been described using mathematical models, particularly exponential decay models [@bartels2018; @bartelsferreira2015].
 
@@ -10,7 +10,7 @@ Bartels et al. (2018) also described two distinct phases of recovery: a fast pha
 
 These findings suggest that non-linear models may be more appropriate than a simple linear regression. A bi-exponential model could also be investigated to represent two recovery components, although its superiority must be demonstrated using the data.
 
-## - Physiological mechanisms
+### Physiological mechanisms
 
 The decrease in heart rate after exercise is mainly explained by changes in the activity of the autonomic nervous system [@bartels2018].
 
@@ -22,7 +22,7 @@ Sympathetic withdrawal: contributes to the slower decrease during the later reco
 
 These mechanisms do not act at exactly the same speed, which helps explain why heart rate recovery is not constant over time.
 
-## - Expected characteristics of the recovery curve 
+### Expected characteristics of the recovery curve 
 
 Based on the literature, we expect the recovery curve to show:
 
@@ -36,7 +36,7 @@ Differences depending on exercise intensity, since Bartels et al. (2018) observe
 
 Therefore, we expect the recovery curve to be non-linear rather than a straight line.
 
-## - Is one model sufficient for the whole recovery? 
+### Is one model sufficient for the whole recovery? 
 
 The literature suggests that a single model may not always describe every characteristic of heart rate recovery.
 
@@ -50,7 +50,7 @@ However, the presence of two physiological phases does not necessarily mean that
 
 Our hypotheses 
 
-## - Based on these two studies, we formulate the following hypotheses for the two recordings:
+### Based on these two studies, we formulate the following hypotheses for the two recordings:
 
 H1: We expect heart rate to decrease rapidly immediately after exercise, followed by a slower decrease. Therefore, the linear model is expected to provide a poorer fit than the exponential models.
 
@@ -61,7 +61,7 @@ H3: We hypothesize that a bi-exponential model could better represent the fast a
 H4: We expect the best-fitting model to depend on the characteristics of each recording, particularly the duration of the actual recovery period and the shape of the heart rate curve. Therefore, the same model may not be optimal for both datasets.
 
 
-# 2 - Test your predictions using the datasets
+## Test your predictions using the datasets
 
 
 ```{r}
@@ -601,7 +601,7 @@ model_metrics(
 )
 ```
 
-# - Draw a conclusion 
+## Draw a conclusion 
 
 Our results generally support our initial hypotheses.
 

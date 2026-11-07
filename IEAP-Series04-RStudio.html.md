@@ -29,7 +29,7 @@ Together, these two analyses aim to demonstrate how data variability and model s
 
 # Part 2 – Linear regression and random noise
 
-### 1. Formulate your expectations
+## Formulate your expectations
 
 Before running the simulations, we expect that increasing the level of random noise will make the observed data more dispersed around the underlying linear relationship.
 
@@ -40,7 +40,7 @@ Before running the simulations, we expect that increasing the level of random no
 The three estimated linear relationships are therefore not expected to be exactly identical, even though they share the same underlying theoretical relationship. Random variations in the generated data will lead to differences between the fitted regression models.
 
 
-### 2. Implement and investigate
+## Implement and investigate
 
 
 ::: {.cell}
@@ -278,7 +278,7 @@ ggplot(data_all, aes(x = x, y = y, color = Noise)) +
 :::
 
 
-### 3. Draw conclusions
+## Draw conclusions
 
 The results are consistent with our initial expectations. Increasing the level of random noise leads to a greater dispersion of the data points around the regression line.
 
@@ -290,7 +290,7 @@ The estimated slopes and intercepts are not exactly identical between the three 
 
 Overall, random noise does not remove the underlying linear relationship, but it makes it more difficult to estimate accurately and reduces the predictive quality of the regression model.
 
-### 4. Propose a better numerical experiment
+## Propose a better numerical experiment
 
 To improve the numerical experiment, we could repeat the simulation 500 times for each noise level while keeping the same theoretical linear relationship and the same x values.
 
@@ -301,9 +301,9 @@ This method would reduce the influence of random variations from a single simula
 
 # Part 3 – Heart rate recovery
 
-# 1 - Formulate predictions from scientific literature
+## Formulate predictions from scientific literature
 
-## - Mathematical models
+### Mathematical models
 
 Heart rate recovery (HRR) after exercise has been described using mathematical models, particularly exponential decay models [@bartels2018; @bartelsferreira2015].
 
@@ -313,7 +313,7 @@ Bartels et al. (2018) also described two distinct phases of recovery: a fast pha
 
 These findings suggest that non-linear models may be more appropriate than a simple linear regression. A bi-exponential model could also be investigated to represent two recovery components, although its superiority must be demonstrated using the data.
 
-## - Physiological mechanisms
+### Physiological mechanisms
 
 The decrease in heart rate after exercise is mainly explained by changes in the activity of the autonomic nervous system [@bartels2018].
 
@@ -325,7 +325,7 @@ Sympathetic withdrawal: contributes to the slower decrease during the later reco
 
 These mechanisms do not act at exactly the same speed, which helps explain why heart rate recovery is not constant over time.
 
-## - Expected characteristics of the recovery curve 
+### Expected characteristics of the recovery curve 
 
 Based on the literature, we expect the recovery curve to show:
 
@@ -339,7 +339,7 @@ Differences depending on exercise intensity, since Bartels et al. (2018) observe
 
 Therefore, we expect the recovery curve to be non-linear rather than a straight line.
 
-## - Is one model sufficient for the whole recovery? 
+### Is one model sufficient for the whole recovery? 
 
 The literature suggests that a single model may not always describe every characteristic of heart rate recovery.
 
@@ -353,7 +353,7 @@ However, the presence of two physiological phases does not necessarily mean that
 
 Our hypotheses 
 
-## - Based on these two studies, we formulate the following hypotheses for the two recordings:
+### Based on these two studies, we formulate the following hypotheses for the two recordings:
 
 H1: We expect heart rate to decrease rapidly immediately after exercise, followed by a slower decrease. Therefore, the linear model is expected to provide a poorer fit than the exponential models.
 
@@ -364,7 +364,7 @@ H3: We hypothesize that a bi-exponential model could better represent the fast a
 H4: We expect the best-fitting model to depend on the characteristics of each recording, particularly the duration of the actual recovery period and the shape of the heart rate curve. Therefore, the same model may not be optimal for both datasets.
 
 
-# 2 - Test your predictions using the datasets
+## Test your predictions using the datasets
 
 
 
@@ -1382,7 +1382,7 @@ model_metrics(
 :::
 
 
-# - Draw a conclusion 
+## Draw a conclusion 
 
 Our results generally support our initial hypotheses.
 
