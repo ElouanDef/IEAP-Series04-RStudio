@@ -1,7 +1,3 @@
----
-title: "noise"
-format: html
----
 ### 1. Formulate your expectations
 
 Before running the simulations, we expect that increasing the level of random noise will make the observed data more dispersed around the underlying linear relationship.
