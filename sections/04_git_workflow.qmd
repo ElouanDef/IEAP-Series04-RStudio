@@ -4,4 +4,11 @@ To facilitate parallel collaboration and prevent complex merge conflicts, we ado
 ## Branching and Pull Request Strategy
 We utilized a feature-branch workflow to maintain a clean and stable repository. The `main` branch was treated as our protected production environment. We created separate feature branches for individual tasks—for example, isolating the initial computational prototyping for Part 2 and Part 3 onto their own branches. Once a feature was complete, it was submitted as a Pull Request and merged into `main`. Finally, an integration branch (`integration-and-section4`) was used to assess and compile everything, resolve technical bugs, format the YAML configuration, and compile the final deliverables.
 
+## Project Challenges
+
+### Statistical and Analytical Challenges
+During the linear regression simulations (Part 2), structuring the comparison across the three noise conditions proved to be a time-consuming data management challenge. Extracting the specific coefficients, $R^2$ values, and residual standard errors from multiple `lm()` objects and wrangling them into a unified, readable dataframe required meticulous coding rather than conceptual difficulty. 
+
+In Part 3, a major analytical challenge was identifying the exact onset of the post-exercise recovery period in the 3-hour and 10-minute recording. Because the heart rate data fluctuated significantly, we had to align it with the triaxial accelerometer data to estimate the cessation of movement and isolate the recovery window. Furthermore, when attempting to fit the bi-exponential model using Non-Linear Least Squares (`nls`), we encountered severe parameter unidentifiability. The 5-parameter model struggled to converge on physiologically realistic values (e.g., estimating an asymptotic resting heart rate of 0 bpm), which reinforced our decision to favor the more robust and interpretable mono-exponential model.
+
 
