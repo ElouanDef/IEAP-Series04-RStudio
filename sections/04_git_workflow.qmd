@@ -1,3 +1,7 @@
 ## Modular Quarto Architecture
 To facilitate parallel collaboration and prevent complex merge conflicts, we adopted a modular project architecture. Instead of all three team members editing a single monolithic Quarto file, we divided the assignment into discrete parts (`01_introduction.qmd`, `02_noise_regression.qmd`, etc.) housed within a `sections/` subdirectory. These child documents were then aggregated into the master `IEAP-Series04-RStudio.qmd` file using Quarto's `{{< include >}}` shortcodes. This allowed us to work on the noise simulations and the heart rate recovery models simultaneously without overwriting each other's code.
 
+## Branching and Pull Request Strategy
+We utilized a feature-branch workflow to maintain a clean and stable repository. The `main` branch was treated as our protected production environment. We created separate feature branches for individual tasks—for example, isolating the initial computational prototyping for Part 2 and Part 3 onto their own branches. Once a feature was complete, it was submitted as a Pull Request and merged into `main`. Finally, an integration branch (`integration-and-section4`) was used to assess and compile everything, resolve technical bugs, format the YAML configuration, and compile the final deliverables.
+
+
