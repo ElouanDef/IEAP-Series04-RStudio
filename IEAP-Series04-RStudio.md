@@ -1277,6 +1277,15 @@ GitHub-flavored `.md` file, and natively embed CSS/JS resources required
 careful testing to keep our Git history clean of auto-generated
 dependency folders.
 
+Second, configuring the Quarto YAML header to output a GitHub-Flavored
+Markdown (`gfm`) file with fully rendered APA citations while
+maintaining the `.png` image links proved highly complex. Quarto’s
+aggressive automated cleanup scripts repeatedly deleted the external
+image folders required by the Markdown file when HTML embedding was
+active. Resolving this required bypassing Quarto’s default render cache
+via terminal execution (`quarto render --execute`), and isolating the
+`gfm` build format.
+
 # References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
