@@ -5,9 +5,8 @@ author: "Werner BINCHE, Elouan DEFFIN, Vidusha THEBUWANA"
 date: "2026-11-07"
 date-format: "YYYY-MM-DD"
 format: 
-  html: 
-    embed-resources: true
-    keep-md: true
+  gfm: 
+    number-sections: true
 bibliography: references.bib
 csl: https://www.zotero.org/styles/apa
 ---
@@ -29,3 +28,8 @@ Github Link: https://github.com/ElouanDef/IEAP-Series04-RStudio
 # Git workflow
 
 {{< include sections/04_git_workflow.qmd >}}
+
+# References
+
+::: {#refs}
+:::
