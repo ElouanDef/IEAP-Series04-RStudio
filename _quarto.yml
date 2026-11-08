@@ -3,6 +3,7 @@ project:
 
 format:
   html:
+    embed-resources: true
     toc: true
     number-sections: true
     theme: cosmo

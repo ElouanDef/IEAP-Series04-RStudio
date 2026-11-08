@@ -1,4 +1,17 @@
----
-title: "git"
-format: html
----
+## Modular Quarto Architecture
+To facilitate parallel collaboration and prevent complex merge conflicts, we adopted a modular project architecture. Instead of all three team members editing a single monolithic Quarto file, we divided the assignment into discrete parts (`01_introduction.qmd`, `02_noise_regression.qmd`, etc.) housed within a `sections/` subdirectory. These child documents were then aggregated into the master `IEAP-Series04-RStudio.qmd` file using Quarto's `{{< include >}}` shortcodes. This allowed us to work on the noise simulations and the heart rate recovery models simultaneously without overwriting each other's code.
+
+## Branching and Pull Request Strategy
+We utilized a feature-branch workflow to maintain a clean and stable repository. The `main` branch was treated as our protected production environment. We created separate feature branches for individual tasks—for example, isolating the initial computational prototyping for Part 2 and Part 3 onto their own branches. Once a feature was complete, it was submitted as a Pull Request and merged into `main`. Finally, an integration branch (`integration-and-section4`) was used to assess and compile everything, resolve technical bugs, format the YAML configuration, and compile the final deliverables.
+
+## Project Challenges
+
+### Statistical and Analytical Challenges
+During the linear regression simulations (Part 2), structuring the comparison across the three noise conditions proved to be a time-consuming data management challenge. Extracting the specific coefficients, $R^2$ values, and residual standard errors from multiple `lm()` objects and wrangling them into a unified, readable dataframe required meticulous coding rather than conceptual difficulty. 
+
+In Part 3, a major analytical challenge was identifying the exact onset of the post-exercise recovery period in the 3-hour and 10-minute recording. Because the heart rate data fluctuated significantly, we had to align it with the triaxial accelerometer data to estimate the cessation of movement and isolate the recovery window. Furthermore, when attempting to fit the bi-exponential model using Non-Linear Least Squares (`nls`), we encountered severe parameter unidentifiability. The 5-parameter model struggled to converge on physiologically realistic values (e.g., estimating an asymptotic resting heart rate of 0 bpm), which reinforced our decision to favor the more robust and interpretable mono-exponential model.
+
+### Technical and Git Challenges
+Technically, managing relative file paths across a modular Quarto project proved challenging. Code chunks written and tested interactively inside the `sections/` folder initially used paths like `../data`, which subsequently broke when the master document attempted to render them from the root directory. We resolved this by implementing root-relative pathing (`list.files("data")`). Additionally, configuring the YAML header to simultaneously output HTML, retain the intermediate GitHub-flavored `.md` file, and natively embed CSS/JS resources required careful testing to keep our Git history clean of auto-generated dependency folders.
+
+Second, configuring the Quarto YAML header to output a GitHub-Flavored Markdown (`gfm`) file with fully rendered APA citations while maintaining the `.png` image links proved highly complex. Quarto's aggressive automated cleanup scripts repeatedly deleted the external image folders required by the Markdown file when HTML embedding was active. Resolving this required bypassing Quarto's default render cache via terminal execution (`quarto render --execute`), and isolating the `gfm` build format.

@@ -1,10 +1,3 @@
----
-title: "intro"
-format: html
----
-
-## Introduction
-
 Linear regression is a statistical method used to describe and analyse the relationship between two variables. It allows us to estimate a linear trend and make predictions based on observed data. However, real-world measurements often contain random noise, which can influence the accuracy and reliability of regression models.
 
 The first part of this study is to investigate how different levels of random noise affect linear regression. Three synthetic datasets will be generated using the same underlying linear relationship but with different levels of random variability. The resulting regression models will then be compared using numerical indicators and graphical representations to evaluate the impact of noise on parameter estimation, explained variance and prediction accuracy.
