@@ -1,0 +1,3 @@
+## Modular Quarto Architecture
+To facilitate parallel collaboration and prevent complex merge conflicts, we adopted a modular project architecture. Instead of all three team members editing a single monolithic Quarto file, we divided the assignment into discrete parts (`01_introduction.qmd`, `02_noise_regression.qmd`, etc.) housed within a `sections/` subdirectory. These child documents were then aggregated into the master `IEAP-Series04-RStudio.qmd` file using Quarto's `{{< include >}}` shortcodes. This allowed us to work on the noise simulations and the heart rate recovery models simultaneously without overwriting each other's code.
+
